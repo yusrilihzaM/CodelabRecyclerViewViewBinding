@@ -10,7 +10,7 @@ import com.yusril.myrecyclerview.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-
+    private var title = "Mode List"
     private val list = ArrayList<Hero>()// menampung data offline
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        supportActionBar?.setTitle(title)
         // recycler view
         binding.rvHeroes.setHasFixedSize(true)
         list.addAll(getListHero())
@@ -37,7 +37,11 @@ class MainActivity : AppCompatActivity() {
         val gridLayoutManager=GridHeroAdapter(list)
         binding.rvHeroes.adapter=gridLayoutManager
     }
-    private fun showRecylerViewCard() {}
+    private fun showRecylerViewCard() {
+        binding.rvHeroes.layoutManager = LinearLayoutManager(this)
+        val cardViewHeroAdapter = CardViewHeroAdapter(list)
+        binding.rvHeroes.adapter = cardViewHeroAdapter
+    }
 
 
     // ambil data dari String kemudian masukan ke array
@@ -75,12 +79,15 @@ class MainActivity : AppCompatActivity() {
         when(itemId){
             R.id.action_list -> {
                 showRecylerViewList()
+                title="Mode List"
             }
             R.id.action_grid -> {
                 showRecylerViewGrid()
+                title="Mode Grid"
             }
             R.id.action_cardview -> {
                 showRecylerViewCard()
+                title="Mode Card"
             }
         }
     }
