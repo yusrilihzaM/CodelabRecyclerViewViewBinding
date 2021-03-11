@@ -8,6 +8,12 @@ import com.bumptech.glide.request.RequestOptions
 import com.yusril.myrecyclerview.databinding.ItemGridHeroBinding
 
 class GridHeroAdapter(private val listHero: ArrayList<Hero>) : RecyclerView.Adapter<GridHeroAdapter.GridViewHolder>() {
+
+    private var onItemClickCallback: OnItemClickCallback? = null
+
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
     inner class GridViewHolder(private val binding: ItemGridHeroBinding):RecyclerView.ViewHolder(binding.root) {
         fun bind(hero: Hero) {
             with(binding){
@@ -15,6 +21,7 @@ class GridHeroAdapter(private val listHero: ArrayList<Hero>) : RecyclerView.Adap
                     .load(hero.photo)
                     .apply(RequestOptions().override(350, 550))
                     .into(imgItemPhoto)
+                itemView.setOnClickListener { onItemClickCallback?.onItemClicked(hero) }
             }
         }
     }
@@ -30,5 +37,8 @@ class GridHeroAdapter(private val listHero: ArrayList<Hero>) : RecyclerView.Adap
 
     override fun getItemCount(): Int {
         return  listHero.size
+    }
+    interface OnItemClickCallback {
+        fun onItemClicked(data: Hero)
     }
 }

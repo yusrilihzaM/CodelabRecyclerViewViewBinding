@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yusril.myrecyclerview.databinding.ActivityMainBinding
@@ -18,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportActionBar?.setTitle(title)
+        supportActionBar?.title = title
         // recycler view
         binding.rvHeroes.setHasFixedSize(true)
         list.addAll(getListHero())
@@ -30,17 +31,34 @@ class MainActivity : AppCompatActivity() {
         binding.rvHeroes.layoutManager=LinearLayoutManager(this)
         val listHeroAdapter=ListHeroAdapter(list)// adapter dimasukan data dari list
         binding.rvHeroes.adapter=listHeroAdapter// set rvHeros ke adapternya
+        listHeroAdapter.setOnItemClickCallback(object : ListHeroAdapter.OnItemClickCallback{
+            override fun onItemClicked(data: Hero) {
+                showSelectedHero(data)
+            }
+        })
+
     }
 
     private fun showRecylerViewGrid() {
         binding.rvHeroes.layoutManager=GridLayoutManager(this,2)
-        val gridLayoutManager=GridHeroAdapter(list)
-        binding.rvHeroes.adapter=gridLayoutManager
+        val gridHeroAdapter=GridHeroAdapter(list)
+        binding.rvHeroes.adapter=gridHeroAdapter
+        gridHeroAdapter.setOnItemClickCallback(object :GridHeroAdapter.OnItemClickCallback{
+            override fun onItemClicked(data: Hero) {
+                showSelectedHero(data)
+            }
+        })
+
     }
     private fun showRecylerViewCard() {
         binding.rvHeroes.layoutManager = LinearLayoutManager(this)
         val cardViewHeroAdapter = CardViewHeroAdapter(list)
         binding.rvHeroes.adapter = cardViewHeroAdapter
+        cardViewHeroAdapter.setOnItemClickCallback(object :CardViewHeroAdapter.OnItemClickCallback{
+            override fun onItemClicked(data: Hero) {
+                showSelectedHero(data)
+            }
+        })
     }
 
 
@@ -90,5 +108,8 @@ class MainActivity : AppCompatActivity() {
                 title="Mode Card"
             }
         }
+    }
+    private fun showSelectedHero(hero: Hero) {
+        Toast.makeText(this, "Kamu memilih ${hero.name}", Toast.LENGTH_SHORT).show()
     }
 }

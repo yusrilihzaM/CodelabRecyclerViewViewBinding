@@ -9,6 +9,12 @@ import com.bumptech.glide.request.RequestOptions
 import com.yusril.myrecyclerview.databinding.ItemRowHeroBinding
 
 class ListHeroAdapter(private val listHero: ArrayList<Hero>): RecyclerView.Adapter<ListHeroAdapter.ListViewHolder>() {
+    private var onItemClickCallback: OnItemClickCallback? = null
+
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
+
 
     // tempat inisialisasi
     inner class ListViewHolder(private val binding: ItemRowHeroBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -20,6 +26,9 @@ class ListHeroAdapter(private val listHero: ArrayList<Hero>): RecyclerView.Adapt
                     .into(imgItemPhoto)
                 tvItemName.text = hero.name
                 tvItemDescription.text = hero.description
+                itemView.setOnClickListener{
+                    onItemClickCallback?.onItemClicked(hero)
+                }
             }
         }
     }
@@ -36,4 +45,9 @@ class ListHeroAdapter(private val listHero: ArrayList<Hero>): RecyclerView.Adapt
     override fun getItemCount(): Int {
         return listHero.size
     }
+    interface OnItemClickCallback {
+        fun onItemClicked(data: Hero)
+    }
 }
+
+
