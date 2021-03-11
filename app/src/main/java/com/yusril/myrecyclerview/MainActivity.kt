@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yusril.myrecyclerview.databinding.ActivityMainBinding
 
@@ -31,7 +32,11 @@ class MainActivity : AppCompatActivity() {
         binding.rvHeroes.adapter=listHeroAdapter// set rvHeros ke adapternya
     }
 
-    private fun showRecylerViewGrid() {}
+    private fun showRecylerViewGrid() {
+        binding.rvHeroes.layoutManager=GridLayoutManager(this,2)
+        val gridLayoutManager=GridHeroAdapter(list)
+        binding.rvHeroes.adapter=gridLayoutManager
+    }
     private fun showRecylerViewCard() {}
 
 
